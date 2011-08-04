@@ -23,6 +23,8 @@
 .black   { background: #000; }
 </style>
 <script type="text/javascript">
+"use strict";
+
 window.onload = function() {
 	var motionCount = 0;
 	var activeChip;
@@ -40,6 +42,13 @@ window.onload = function() {
 		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed']
 	];
 	// @}
+
+	function increaseMotionCount() {
+		++motionCount;
+		console.log(motionCount);
+		console.log(document.getElementById('motionCount'));
+		document.getElementById('motionCount').innerHTML = motionCount;
+	}
 
 	// @{
 	// init
@@ -87,6 +96,8 @@ window.onload = function() {
 						this.className = activeChip.className;
 						activeChip.className = 'cell free';
 						activeChip = null;
+
+						increaseMotionCount();
 					}
 
 					console.log(this, this.className);
@@ -105,6 +116,7 @@ window.onload = function() {
 </script>
 </head>
 <body>
+	<div>Ходов: <span id="motionCount">0</span></div>
 	<div id="game-field"></div>
 </body>
 </html>
