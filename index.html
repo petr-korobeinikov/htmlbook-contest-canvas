@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=UTF-8">
+<title>Htmlbook.ru Contest</title>
+<style type="text/css">
+#game-field {
+	width: 217px;
+}
+
+.cell {
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	float: left;
+	height: 30px;
+	width: 30px;
+}
+
+.doomed  { background: #fcc; }
+.free    { background: #fff; }
+.white   { background: #ccc; }
+.gray    { background: #aaa; }
+.black   { background: #000; }
+</style>
+<script type="text/javascript">
+window.onload = function() {
+	var gameFieldContainer = document.getElementById('game-field');
+
+	// @{
+	// field
+	var field = [
+		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed'],
+		['doomed', 'doomed', 'free'  , 'white', 'free'  , 'doomed', 'doomed'],
+		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed'],
+		['gray'  , 'gray'  , 'gray'  , 'black', 'gray'  , 'gray'  , 'gray'  ],
+		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed'],
+		['doomed', 'doomed', 'free'  , 'white', 'free'  , 'doomed', 'doomed'],
+		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed']
+	];
+	// @}
+
+	// @{
+	// init
+	(function() {
+		var fragment = document.createDocumentFragment();
+		var i = 0,
+		    j = 0,
+		    len,
+		    innerLen,
+		    row,
+		    cell,
+		    cellClassName;
+
+		for (i = 0, len = field.length; i < len; i += 1) {
+			row = field[i];
+			for (j = 0, innerLen = row.length; j < innerLen; j += 1) {
+				cell = document.createElement('div');
+				cell.appendChild(
+					document.createTextNode(' ')
+				);
+
+				cell.className = 'cell ' + row[j];
+
+				cell.onclick = function() {
+					console.log(this);
+				}
+
+				fragment.appendChild(cell);
+			}
+		}
+
+		gameFieldContainer.appendChild(fragment);
+	})();
+	// @}
+
+};
+</script>
+</head>
+<body>
+	<div id="game-field"></div>
+</body>
+</html>
