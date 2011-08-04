@@ -16,107 +16,143 @@
 	width: 30px;
 }
 
-.doomed  { background: #fcc; }
-.free    { background: #fff; }
-.white   { background: #ccc; }
-.gray    { background: #aaa; }
-.black   { background: #000; }
+.d { background: #fcc; }
+.f { background: #fff; }
+.w { background: #ccc; }
+.g { background: #aaa; }
+.b { background: #000; }
 </style>
 <script type="text/javascript">
 "use strict";
 
-window.onload = function() {
-	var motionCount = 0;
-	var activeChip;
-	var gameFieldContainer = document.getElementById('game-field');
+var game = {};
 
-	// @{
-	// field
-	var field = [
-		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed'],
-		['doomed', 'doomed', 'free'  , 'white', 'free'  , 'doomed', 'doomed'],
-		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed'],
-		['gray'  , 'gray'  , 'gray'  , 'black', 'gray'  , 'gray'  , 'gray'  ],
-		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed'],
-		['doomed', 'doomed', 'free'  , 'white', 'free'  , 'doomed', 'doomed'],
-		['doomed', 'doomed', 'doomed', 'white', 'doomed', 'doomed', 'doomed']
-	];
-	// @}
+// Контейнер игры
+game.gameFieldContainer = null;
 
-	function increaseMotionCount() {
-		++motionCount;
-		console.log(motionCount);
-		console.log(document.getElementById('motionCount'));
-		document.getElementById('motionCount').innerHTML = motionCount;
-	}
+// Счетчик ходов
+game.motionCount = 0;
 
-	// @{
-	// init
-	(function() {
-		var fragment = document.createDocumentFragment();
-		var i = 0,
-		    j = 0,
-		    len,
-		    innerLen,
-		    row,
-		    cell;
+// Текущая двигаемая фишка
+game.activeChip = null;
 
-		for (i = 0, len = field.length; i < len; i += 1) {
-			row = field[i];
-			for (j = 0, innerLen = row.length; j < innerLen; j += 1) {
-				cell = document.createElement('div');
-				cell.appendChild(
-					document.createTextNode(' ')
-				);
+// Состояние поля в данный момент игры
+game.currentField = [];
 
-				cell.className = 'cell ' + row[j];
+// Поле для новой игры
+// d - doomed
+// w - white
+// b - black
+// g - gray
+// f - free
+game.defaultField = [
+	[{type: 'd'}, {type: 'd'}, {type: 'd'}, {type: 'w'}, {type: 'd'}, {type: 'd'}, {type: 'd'}],
+	[{type: 'd'}, {type: 'd'}, {type: 'f'}, {type: 'w'}, {type: 'f'}, {type: 'd'}, {type: 'd'}],
+	[{type: 'd'}, {type: 'd'}, {type: 'd'}, {type: 'w'}, {type: 'd'}, {type: 'd'}, {type: 'd'}],
+	[{type: 'g'}, {type: 'g'}, {type: 'g'}, {type: 'b'}, {type: 'g'}, {type: 'g'}, {type: 'g'}],
+	[{type: 'd'}, {type: 'd'}, {type: 'd'}, {type: 'w'}, {type: 'd'}, {type: 'd'}, {type: 'd'}],
+	[{type: 'd'}, {type: 'd'}, {type: 'f'}, {type: 'w'}, {type: 'f'}, {type: 'd'}, {type: 'd'}],
+	[{type: 'd'}, {type: 'd'}, {type: 'd'}, {type: 'w'}, {type: 'd'}, {type: 'd'}, {type: 'd'}]
+];
 
-				cell.onclick = function() {
-					// Ничего не делать, если ячейка не участвует в игре.
-					if ('cell doomed' == this.className) {
-						return false;
-					}
+game.startNewGame = function() {
+	this.currentField = this.defaultField;
+	this.renderField();
+}
 
-					// Сделать фишку активной
-					if (
-						'cell gray' == this.className
-						|| 'cell white' == this.className
-						|| 'cell black' == this.className
-					) {
-						activeChip = this;
-					}
+game.increaseMotionCount = function() {
+	++this.motionCount;
+	document.getElementById('motionCount').innerHTML = this.motionCount;
+}
 
-					// Передвигаем фишку сюда,
-					// т.е. меняем ячейки местами
-					if (
-						null !== activeChip
-						&& 'cell free' == this.className
-					) {
-						// TODO: Проверка на "соседность" ячейки
-						this.className = activeChip.className;
-						activeChip.className = 'cell free';
-						activeChip = null;
+game.renderField = function() {
+	var fragment = document.createDocumentFragment();
+	var i = 0,
+	    j = 0,
+	    len,
+	    innerLen,
+	    row,
+	    cell;
 
-						increaseMotionCount();
-					}
+	// Очищаем поле
+	this.gameFieldContainer.innerHTML = '';
 
-					console.log(this, this.className);
-					console.info('activeChip', activeChip);
+	for (i = 0, len = this.currentField.length; i < len; i += 1) {
+		row = this.currentField[i];
+		for (j = 0, innerLen = row.length; j < innerLen; j += 1) {
+			cell = document.createElement('div');
+			cell.appendChild(
+				document.createTextNode(' ')
+			);
+
+			cell.className = 'cell ' + row[j].type;
+			console.log(row[j]);
+
+			cell.onclick = function() {
+				console.log(row[j]);
+				return;
+
+				// Ничего не делать, если ячейка не участвует в игре.
+				if ('d' == row[j].type) {
+					return false;
 				}
 
-				fragment.appendChild(cell);
+				// Сделать фишку активной
+				if (
+					'g' == row[j].type
+					|| 'w' == row[j].type
+					|| 'b' == row[j].type
+				) {
+					this.activeChip = row[j];
+					console.log(row[j]);
+				}
+
+				/*
+				// Передвигаем фишку сюда,
+				// т.е. меняем ячейки местами
+				if (
+					null !== activeChip
+					&& 'cell free' == this.className
+				) {
+					// TODO: Проверка на "соседность" ячейки
+					this.className = activeChip.className;
+					activeChip.className = 'cell free';
+					activeChip = null;
+
+					// @TODO this
+					game.increaseMotionCount();
+				}
+				*/
+
+				//console.log(this, this.className);
+				//console.info('activeChip', activeChip);
 			}
+
+			fragment.appendChild(cell);
 		}
+	}
 
-		gameFieldContainer.appendChild(fragment);
-	})();
-	// @}
+	this.gameFieldContainer.appendChild(fragment);
+}
 
+game.moveChip = function() {
+}
+
+
+
+window.onload = function() {
+	game.gameFieldContainer = document.getElementById('game-field');
+	document.getElementById('startNewGame').onclick = function() {
+		game.startNewGame();
+	}
 };
 </script>
 </head>
 <body>
-	<div>Ходов: <span id="motionCount">0</span></div>
 	<div id="game-field"></div>
+
+	<div style="clear:both;"></div>
+	<div>Ходов: <span id="motionCount">0</span></div>
+	<input id="startNewGame" type="button" value="Начать новую игру!">
 </body>
 </html>
