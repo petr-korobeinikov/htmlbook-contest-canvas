@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset=UTF-8">
-<title>Htmlbook.ru Contest</title>
+<title>Плитки майя [Htmlbook.ru Contest]</title>
 <style type="text/css">
 #game-field {
 	width: 217px;
@@ -24,6 +24,8 @@
 </style>
 <script type="text/javascript">
 window.onload = function() {
+	var motionCount = 0;
+	var activeChip;
 	var gameFieldContainer = document.getElementById('game-field');
 
 	// @{
@@ -48,8 +50,7 @@ window.onload = function() {
 		    len,
 		    innerLen,
 		    row,
-		    cell,
-		    cellClassName;
+		    cell;
 
 		for (i = 0, len = field.length; i < len; i += 1) {
 			row = field[i];
@@ -62,7 +63,34 @@ window.onload = function() {
 				cell.className = 'cell ' + row[j];
 
 				cell.onclick = function() {
-					console.log(this);
+					// Ничего не делать, если ячейка не участвует в игре.
+					if ('cell doomed' == this.className) {
+						return false;
+					}
+
+					// Сделать фишку активной
+					if (
+						'cell gray' == this.className
+						|| 'cell white' == this.className
+						|| 'cell black' == this.className
+					) {
+						activeChip = this;
+					}
+
+					// Передвигаем фишку сюда,
+					// т.е. меняем ячейки местами
+					if (
+						null !== activeChip
+						&& 'cell free' == this.className
+					) {
+						// TODO: Проверка на "соседность" ячейки
+						this.className = activeChip.className;
+						activeChip.className = 'cell free';
+						activeChip = null;
+					}
+
+					console.log(this, this.className);
+					console.info('activeChip', activeChip);
 				}
 
 				fragment.appendChild(cell);
