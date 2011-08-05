@@ -90,7 +90,6 @@ function drawBoard() {
 	
 	context.clearRect(0, 0, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
 	
-	context.fillStyle = 'black';
 	// @{
 	// Отрисовка счётчика ходов
 	context.fillStyle = 'white';
@@ -135,7 +134,7 @@ function drawCell(x, y, fill) {
 	
 	// @{
 	// Квадратик
-	context.rect(x - chipRadius, y - chipRadius, chipRadius * 2, chipRadius * 2);
+	context.rect(x - chipRadius + .5, y - chipRadius + .5, chipRadius * 2, chipRadius * 2);
 	context.lineWidth = 1;
 	context.strokeStyle = "white";
 	context.closePath();
@@ -146,23 +145,22 @@ function drawCell(x, y, fill) {
 	// Фишка рисуется на непустых ячейках
 	if (fill != CELL_FREE) {
 		context.beginPath();
-		context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
+		context.arc(x + .5, y + .5, chipRadius - 3, 0, 2 * Math.PI, false);
 		context.lineWidth = 1;
 		context.fillStyle = fillStyle;
 		context.fill();
-		context.strokeStyle = 'black';
 		context.closePath();
-		context.stroke();		
+		context.stroke();
 	}
 	// @}
 }
 
 function highlightCurrentChip() {
 	var x, y;
-	
+
 	x = currentChip.x * 2 * chipRadius + chipRadius;
 	y = currentChip.y * 2 * chipRadius + chipRadius;
-	
+
 	context.beginPath();
 	context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
 	context.lineWidth = 3;
@@ -259,10 +257,11 @@ function onClick(e) {
 		CELL_DOOMED != clickedCell
 		&& CELL_FREE != clickedCell
 	) {
-		currentChip      = {};
-		currentChip.type = currentBoard[j][i];
-		currentChip.x    = i;
-		currentChip.y    = j;
+		currentChip = {
+			type : currentBoard[j][i],
+			x    : i,
+			y    : j
+		};
 		
 		highlightCurrentChip();
 	}
@@ -271,10 +270,11 @@ function onClick(e) {
 		currentChip
 		&& (CELL_FREE == clickedCell)
 	) {
-		targetCell      = {};
-		targetCell.type = currentBoard[j][i];
-		targetCell.x    = i;
-		targetCell.y    = j;
+		targetCell = {
+			type : currentBoard[j][i],
+			x    : i,
+			y    : j
+		};
 	}
 
 	if (
