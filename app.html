@@ -23,9 +23,6 @@
 	width: 150px;
 }
 
-canvas {
-	border: 1px solid black;
-}
 </style>
 <script type="text/javascript" src="app.js"></script>
 <script type="text/javascript">
@@ -41,6 +38,9 @@ window.onload = function() {
 		document.getElementById('game').appendChild(canvas);
 
 		context = canvas.getContext('2d');
+
+		// @TODO onclick ;)
+		canvas.addEventListener("click", onClick, false);
 
 		startGame();
 	} catch (e) {

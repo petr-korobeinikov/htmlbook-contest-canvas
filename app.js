@@ -26,6 +26,9 @@ var currentBoard = null,
 	[0, 0, 0, 2, 0, 0, 0]
 ];
 
+var chipDiameter = ~~(GAME_AREA_WIDTH / defaultBoard.length);
+var chipRadius   = chipDiameter / 2;
+
 function Cell(x, y) {
 	this.x = x;
 	this.y = y;
@@ -60,11 +63,10 @@ function drawBoard() {
 }
 
 function drawCell(x, y, fill) {
-	var fillStyle,
-	    radius = ~~(GAME_AREA_WIDTH / currentBoard.length  / 2);
+	var fillStyle;
 	
-	x = x * 2 * radius + radius;
-	y = y * 2 * radius + radius;
+	x = x * 2 * chipRadius + chipRadius;
+	y = y * 2 * chipRadius + chipRadius;
 	
 	// @{
 	// Стиль заливки фишки
@@ -73,32 +75,61 @@ function drawCell(x, y, fill) {
 		fillStyle = 'black';
 		break;
 	case 2 :
-		fillStyle = 'white';
+		fillStyle = 'yellow';
 		break;
 	case 3 :
-		fillStyle = '#777';
+		fillStyle = 'green';
 		break;
 	case 4 :
-		fillStyle = '#ccc';
+		fillStyle = 'white';
 		break;
 	}
 	// @}
 	
 	// @{
 	// Квадратик
-	context.rect(x - radius, y - radius, radius * 2, radius * 2);
-    context.lineWidth = 1;
-    context.strokeStyle = "black";
-    context.stroke();
-    // @}
+	context.rect(x - chipRadius, y - chipRadius, chipRadius * 2, chipRadius * 2);
+	context.lineWidth = 1;
+	context.strokeStyle = "black";
+	context.stroke();
+	// @}
 	
-    // @{
-    // Фишка
+	// @{
+	// Фишка
 	context.beginPath();
-	context.arc(x, y, radius - 3, 0, 2 * Math.PI, false);
+	context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
 	context.fillStyle = fillStyle;
 	context.fill();
 	context.strokeStyle = 'black';
 	context.stroke();
 	// @}
 }
+
+function getCursorPosition(e) {
+	var x, y;
+	
+	if (e.pageX != undefined && e.pageY != undefined) {
+		x = e.pageX;
+		y = e.pageY;
+	} else {
+		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+	}
+	
+	x -= canvas.offsetLeft;
+	y -= canvas.offsetTop;
+	
+	return {x: x, y: y};
+}
+
+function onClick(e) {
+	var coords = getCursorPosition(e);
+	console.log(coords);
+	
+	//(coords.x * 100 / GAME_AREA_WIDTH) // percentage
+	console.log(
+		Math.floor(coords.x / chipDiameter),
+		Math.floor(coords.y / chipDiameter)
+	);
+}
+
