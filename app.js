@@ -95,17 +95,14 @@ function drawCell(x, y, fill) {
 	// @{
 	// Стиль заливки фишки
 	switch (fill) {
-	case 1 :
+	case CELL_BLACK :
 		fillStyle = 'black';
 		break;
-	case 2 :
+	case CELL_WHITE :
 		fillStyle = 'yellow';
 		break;
-	case 3 :
+	case CELL_GRAY :
 		fillStyle = 'green';
-		break;
-	case 4 :
-		fillStyle = 'white';
 		break;
 	}
 	// @}
@@ -120,15 +117,17 @@ function drawCell(x, y, fill) {
 	// @}
 	
 	// @{
-	// Фишка
-	context.beginPath();
-	context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
-	context.lineWidth = 1;
-	context.fillStyle = fillStyle;
-	context.fill();
-	context.strokeStyle = 'black';
-	context.closePath();
-	context.stroke();
+	// Фишка рисуется на непустых ячейках
+	if (fill != CELL_FREE) {
+		context.beginPath();
+		context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
+		context.lineWidth = 1;
+		context.fillStyle = fillStyle;
+		context.fill();
+		context.strokeStyle = 'black';
+		context.closePath();
+		context.stroke();		
+	}
 	// @}
 }
 
