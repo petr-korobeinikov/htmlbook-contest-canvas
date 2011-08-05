@@ -132,6 +132,26 @@ function getCursorPosition(e) {
 	return {x: x, y: y};
 }
 
+function canBeMoved(from, to) {
+	console.log(from);
+	
+	// Ходить можно
+	if (
+		CELL_FREE == to.type    // на пустую ячейку
+		&& (                    // И
+			from.x == to.x      // не по диагонали
+			|| from.y == to.y
+		)
+	) {
+		return true;
+	}
+	
+	// Если попытка переместить  оказалась неудачной, то надо сбросить ячейки
+	currentChip = targetCell = null;
+	
+	return false;
+}
+
 function onClick(e) {
 	var coords = getCursorPosition(e),
 	    clickedCell,
@@ -163,7 +183,11 @@ function onClick(e) {
 		targetCell.y    = j;
 	}
 
-	if (currentChip && targetCell) {
+	if (
+		currentChip
+		&& targetCell
+		&& canBeMoved(currentChip, targetCell)
+	) {
 		currentBoard[targetCell.y][targetCell.x]   = currentChip.type;
 		currentBoard[currentChip.y][currentChip.x] = targetCell.type;
 
