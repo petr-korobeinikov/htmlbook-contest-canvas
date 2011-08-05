@@ -1,6 +1,4 @@
-/**
- * 
- */
+"use strict";
 
 var canvas  = null,
     context = null;
@@ -18,6 +16,13 @@ var currentChip = null,
  * 3 - gray
  * 4 - free
  */
+var CELL_DOOMED = 0,
+    CELL_BLACK  = 1,
+    CELL_WHITE  = 2,
+    CELL_GRAY   = 3,
+    CELL_FREE   = 4;
+    
+
 var currentBoard = [],
     defaultBoard = [
 	[0, 0, 0, 2, 0, 0, 0],
@@ -31,11 +36,6 @@ var currentBoard = [],
 
 var chipDiameter = ~~(GAME_AREA_WIDTH / defaultBoard.length);
 var chipRadius   = chipDiameter / 2;
-
-function Cell(x, y) {
-	this.x = x;
-	this.y = y;
-}
 
 function startGame() {
 	// @{
@@ -62,7 +62,7 @@ function drawBoard() {
 		for (j = 0, jlen = row.length; j < jlen; j += 1) {
 			cell = currentBoard[i][j];
 			
-			if (0 == cell) {
+			if (CELL_DOOMED == cell) {
 				continue;
 			}
 			
@@ -144,8 +144,8 @@ function onClick(e) {
 	clickedCell = currentBoard[j][i];
 	
 	if (
-		0 != clickedCell
-		&& 4 != clickedCell
+		CELL_DOOMED != clickedCell
+		&& CELL_FREE != clickedCell
 	) {
 		currentChip      = {};
 		currentChip.type = currentBoard[j][i];
@@ -155,7 +155,7 @@ function onClick(e) {
 
 	if (
 		currentChip
-		&& (4 == clickedCell)
+		&& (CELL_FREE == clickedCell)
 	) {
 		targetCell      = {};
 		targetCell.type = currentBoard[j][i];
