@@ -11,6 +11,8 @@ var currentChip = null,
 
 var motionCounter = 0;
 
+var isWin = false;
+
 /*
  * 0 - doomed
  * 1 - black
@@ -51,6 +53,27 @@ function startGame() {
 	// @}
 	
 	drawBoard();
+}
+
+function checkWin() {
+	return (
+		   1 == currentBoard[3][3]
+		&& 3 == currentBoard[0][3]
+		&& 3 == currentBoard[1][3]
+		&& 3 == currentBoard[2][3]
+		
+		&& 3 == currentBoard[4][3]
+		&& 3 == currentBoard[5][3]
+		&& 3 == currentBoard[6][3]
+		
+		&& 2 == currentBoard[3][0]
+		&& 2 == currentBoard[3][1]
+		&& 2 == currentBoard[3][2]
+		
+		&& 2 == currentBoard[3][4]
+		&& 2 == currentBoard[3][5]
+		&& 2 == currentBoard[3][6]
+	);
 }
 
 function increaseMotionCounter() {
@@ -225,6 +248,10 @@ function onClick(e) {
 	j = Math.floor(coords.y / chipDiameter);
 	
 	clickedCell = currentBoard[j][i];
+	
+	if (checkWin()) {
+		alert('Победа!');
+	}
 	
 	drawBoard();
 	
