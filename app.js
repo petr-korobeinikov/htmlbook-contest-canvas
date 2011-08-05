@@ -66,6 +66,8 @@ function drawCell(x, y, fill) {
 	x = x * 2 * radius + radius;
 	y = y * 2 * radius + radius;
 	
+	// @{
+	// Стиль заливки фишки
 	switch (fill) {
 	case 1 :
 		fillStyle = 'black';
@@ -80,11 +82,23 @@ function drawCell(x, y, fill) {
 		fillStyle = '#ccc';
 		break;
 	}
+	// @}
 	
+	// @{
+	// Квадратик
+	context.rect(x - radius, y - radius, radius * 2, radius * 2);
+    context.lineWidth = 1;
+    context.strokeStyle = "black";
+    context.stroke();
+    // @}
+	
+    // @{
+    // Фишка
 	context.beginPath();
 	context.arc(x, y, radius - 3, 0, 2 * Math.PI, false);
 	context.fillStyle = fillStyle;
 	context.fill();
 	context.strokeStyle = 'black';
 	context.stroke();
+	// @}
 }
