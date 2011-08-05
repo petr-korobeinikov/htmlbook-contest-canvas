@@ -68,7 +68,11 @@ function drawBoard() {
 	context.clearRect(0, 0, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
 	
 	context.fillStyle = 'black';
+	// @{
+	// Отрисовка счётчика ходов
+	context.fillStyle = 'white';
 	context.fillText('Ходов: ' + motionCounter, 3, 15, GAME_AREA_WIDTH);
+	// @}
 	
 	for (i = 0, ilen = currentBoard.length; i < ilen; i += 1) {
 		row = currentBoard[i];
@@ -110,7 +114,7 @@ function drawCell(x, y, fill) {
 	// Квадратик
 	context.rect(x - chipRadius, y - chipRadius, chipRadius * 2, chipRadius * 2);
 	context.lineWidth = 1;
-	context.strokeStyle = "black";
+	context.strokeStyle = "white";
 	context.closePath();
 	context.stroke();
 	// @}
