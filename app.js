@@ -18,7 +18,7 @@ var currentChip = null,
  * 3 - gray
  * 4 - free
  */
-var currentBoard = null,
+var currentBoard = [],
     defaultBoard = [
 	[0, 0, 0, 2, 0, 0, 0],
 	[0, 0, 4, 2, 4, 0, 0],
@@ -38,8 +38,14 @@ function Cell(x, y) {
 }
 
 function startGame() {
-	console.log('!!!!!!!!!!!!!!!!!!!!!!!');
-	currentBoard = defaultBoard;
+	// @{
+	// Правильно клонируем массив
+	var i, j, ilen, jlen;
+	for (i = 0, ilen = defaultBoard.length; i < ilen; i += 1) {
+		currentBoard[i] = defaultBoard[i].slice(0);
+	}
+	// @}
+	
 	drawBoard();
 }
 
@@ -151,7 +157,6 @@ function onClick(e) {
 		currentChip
 		&& (4 == clickedCell)
 	) {
-		console.log('targetCell setted up');
 		targetCell      = {};
 		targetCell.type = currentBoard[j][i];
 		targetCell.x    = i;
