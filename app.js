@@ -55,7 +55,6 @@ function startGame() {
 
 function increaseMotionCounter() {
 	++motionCounter;
-	console.log(motionCounter);
 }
 
 function drawBoard() {
