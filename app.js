@@ -8,6 +8,9 @@ var canvas  = null,
 var GAME_AREA_WIDTH  = 210 + 1,
     GAME_AREA_HEIGHT = 210 + 1;
 
+var currentChip = null,
+    targetCell     = null;
+
 /*
  * 0 - doomed
  * 1 - black
@@ -35,6 +38,7 @@ function Cell(x, y) {
 }
 
 function startGame() {
+	console.log('!!!!!!!!!!!!!!!!!!!!!!!');
 	currentBoard = defaultBoard;
 	drawBoard();
 }
@@ -123,13 +127,43 @@ function getCursorPosition(e) {
 }
 
 function onClick(e) {
-	var coords = getCursorPosition(e);
-	console.log(coords);
-	
-	//(coords.x * 100 / GAME_AREA_WIDTH) // percentage
-	console.log(
-		Math.floor(coords.x / chipDiameter),
-		Math.floor(coords.y / chipDiameter)
-	);
-}
+	var coords = getCursorPosition(e),
+	    clickedCell,
+	    i,
+	    j;
 
+	i = Math.floor(coords.x / chipDiameter);
+	j = Math.floor(coords.y / chipDiameter);
+	
+	clickedCell = currentBoard[j][i];
+	
+	if (
+		0 != clickedCell
+		&& 4 != clickedCell
+	) {
+		currentChip      = {};
+		currentChip.type = currentBoard[j][i];
+		currentChip.x    = i;
+		currentChip.y    = j;
+	}
+
+	if (
+		currentChip
+		&& (4 == clickedCell)
+	) {
+		console.log('targetCell setted up');
+		targetCell      = {};
+		targetCell.type = currentBoard[j][i];
+		targetCell.x    = i;
+		targetCell.y    = j;
+	}
+
+	if (currentChip && targetCell) {
+		currentBoard[targetCell.y][targetCell.x]   = currentChip.type;
+		currentBoard[currentChip.y][currentChip.x] = targetCell.type;
+
+		currentChip = targetCell = null;
+		
+		drawBoard();
+	}
+}
