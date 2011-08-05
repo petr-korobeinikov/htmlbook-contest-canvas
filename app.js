@@ -146,7 +146,6 @@ function canBeMoved(from, to) {
 			
 			for (i = start + 1; i < end; i += 1) {
 				if (CELL_FREE != currentBoard[i][from.x]) {
-					console.log('1 currentBoard[', i, '][', from.x, '] is not free.');
 					return false;
 				}
 			}
@@ -155,9 +154,7 @@ function canBeMoved(from, to) {
 			end   = Math.max(from.x, to.x);
 			
 			for (i = start + 1; i < end; i += 1) {
-				console.log(from.x, to.x);
 				if (CELL_FREE != currentBoard[from.y][i]) {
-					console.log('2 currentBoard[', from.y, '][', i, '] is not free.');
 					return false;
 				}
 			}
