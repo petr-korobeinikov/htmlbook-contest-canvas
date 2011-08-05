@@ -57,6 +57,8 @@ function drawBoard() {
 	    row,
 	    cell;
 	
+	context.clearRect(0, 0, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
+	
 	for (i = 0, ilen = currentBoard.length; i < ilen; i += 1) {
 		row = currentBoard[i];
 		for (j = 0, jlen = row.length; j < jlen; j += 1) {
@@ -101,6 +103,7 @@ function drawCell(x, y, fill) {
 	context.rect(x - chipRadius, y - chipRadius, chipRadius * 2, chipRadius * 2);
 	context.lineWidth = 1;
 	context.strokeStyle = "black";
+	context.closePath();
 	context.stroke();
 	// @}
 	
@@ -108,11 +111,27 @@ function drawCell(x, y, fill) {
 	// Фишка
 	context.beginPath();
 	context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
+	context.lineWidth = 1;
 	context.fillStyle = fillStyle;
 	context.fill();
 	context.strokeStyle = 'black';
+	context.closePath();
 	context.stroke();
 	// @}
+}
+
+function highlightCurrentChip() {
+	var x, y;
+	
+	x = currentChip.x * 2 * chipRadius + chipRadius;
+	y = currentChip.y * 2 * chipRadius + chipRadius;
+	
+	context.beginPath();
+	context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
+	context.lineWidth = 3;
+	context.strokeStyle = 'red';
+	context.closePath();
+	context.stroke();
 }
 
 function getCursorPosition(e) {
@@ -193,6 +212,8 @@ function onClick(e) {
 	
 	clickedCell = currentBoard[j][i];
 	
+	drawBoard();
+	
 	if (
 		CELL_DOOMED != clickedCell
 		&& CELL_FREE != clickedCell
@@ -201,6 +222,8 @@ function onClick(e) {
 		currentChip.type = currentBoard[j][i];
 		currentChip.x    = i;
 		currentChip.y    = j;
+		
+		highlightCurrentChip();
 	}
 
 	if (
