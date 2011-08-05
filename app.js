@@ -133,20 +133,53 @@ function getCursorPosition(e) {
 }
 
 function canBeMoved(from, to) {
-	console.log(from);
+	var notJumpingMove = function(from, to) {
+		var i,
+		    start,
+		    end;
+		
+		// В каком направлении движемся?
+		// Есть ли мертвые или занятые клетки на дороге?
+		if (from.x == to.x) { // Вверх\вниз
+			start = Math.min(from.y, to.y);
+			end   = Math.max(from.y, to.y);
+			
+			for (i = start + 1; i < end; i += 1) {
+				if (CELL_FREE != currentBoard[i][from.x]) {
+					console.log('1 currentBoard[', i, '][', from.x, '] is not free.');
+					return false;
+				}
+			}
+		} else if (from.y == to.y) { // Для наглядности. Влево\вправо
+			start = Math.min(from.x, to.x);
+			end   = Math.max(from.x, to.x);
+			
+			for (i = start + 1; i < end; i += 1) {
+				console.log(from.x, to.x);
+				if (CELL_FREE != currentBoard[from.y][i]) {
+					console.log('2 currentBoard[', from.y, '][', i, '] is not free.');
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	};
 	
 	// Ходить можно
 	if (
-		CELL_FREE == to.type    // на пустую ячейку
-		&& (                    // И
-			from.x == to.x      // не по диагонали
+		CELL_FREE == to.type           // на пустую ячейку
+		&& (                           // И
+			from.x == to.x             // НЕ по диагонали
 			|| from.y == to.y
 		)
+		&& notJumpingMove(from, to)    // И НЕ перепрыгивая через другие фишки
 	) {
 		return true;
 	}
 	
-	// Если попытка переместить  оказалась неудачной, то надо сбросить ячейки
+	// Если попытка переместить  оказалась неудачной,
+	// то надо выбирать ячейки заново.
 	currentChip = targetCell = null;
 	
 	return false;
