@@ -9,6 +9,8 @@ var GAME_AREA_WIDTH  = 210 + 1,
 var currentChip = null,
     targetCell     = null;
 
+var motionCounter = 0;
+
 /*
  * 0 - doomed
  * 1 - black
@@ -38,6 +40,8 @@ var chipDiameter = ~~(GAME_AREA_WIDTH / defaultBoard.length);
 var chipRadius   = chipDiameter / 2;
 
 function startGame() {
+	motionCounter = 0;
+	
 	// @{
 	// Правильно клонируем массив
 	var i, j, ilen, jlen;
@@ -49,6 +53,11 @@ function startGame() {
 	drawBoard();
 }
 
+function increaseMotionCounter() {
+	++motionCounter;
+	console.log(motionCounter);
+}
+
 function drawBoard() {
 	var i,
 	    j,
@@ -58,6 +67,9 @@ function drawBoard() {
 	    cell;
 	
 	context.clearRect(0, 0, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
+	
+	context.fillStyle = 'black';
+	context.fillText('Ходов: ' + motionCounter, 3, 15, GAME_AREA_WIDTH);
 	
 	for (i = 0, ilen = currentBoard.length; i < ilen; i += 1) {
 		row = currentBoard[i];
@@ -245,6 +257,8 @@ function onClick(e) {
 		currentBoard[currentChip.y][currentChip.x] = targetCell.type;
 
 		currentChip = targetCell = null;
+		
+		increaseMotionCounter();
 		
 		drawBoard();
 	}
