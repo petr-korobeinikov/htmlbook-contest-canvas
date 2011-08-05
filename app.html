@@ -6,7 +6,15 @@
 <style type="text/css">
 #wrapper {
 	margin: 0 auto;
-	width: 800px;
+	width: 211px;
+}
+
+#support {
+	background: #fee;
+	border: 1px solid red;
+	color: red;
+	display: none;
+	padding: 10px;
 }
 
 #start_new_game {
@@ -14,13 +22,47 @@
 	margin: 0 auto;
 	width: 150px;
 }
+
+canvas {
+	border: 1px solid black;
+}
 </style>
 <script type="text/javascript" src="app.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	try {
+		// Раскомментировать следующую строку для отладки сообщения об ошибке
+		// throw new Error();
+
+		canvas = document.createElement('canvas');
+		canvas.setAttribute('width', GAME_AREA_WIDTH);
+		canvas.setAttribute('height', GAME_AREA_HEIGHT);
+
+		document.getElementById('game').appendChild(canvas);
+
+		context = canvas.getContext('2d');
+
+		startGame();
+	} catch (e) {
+		typeof console != 'undefined' && console.warn(e);
+
+		var support = document.getElementById('support');
+		support.innerHTML = 'Ваш браузер не умеет такие игры =(';
+		support.style.display = 'block';
+	}
+}
+</script>
 </head>
 <body>
 	<div id="wrapper">
-
-		<input id="start_new_game" type="button" value="Начать новую игру!">
+		<div id="support"></div>
+		<div id="game"></div>
+		<input
+			id="start_new_game"
+			type="button"
+			value="Начать новую игру!"
+			onclick="startGame()"
+		>
 	</div>
 </body>
 </html>
