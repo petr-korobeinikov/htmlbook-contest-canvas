@@ -3,9 +3,6 @@
 var canvas  = null,
     context = null;
 
-var GAME_AREA_WIDTH  = 210 + 1,
-    GAME_AREA_HEIGHT = 210 + 1;
-
 var currentChip = null,
     targetCell     = null;
 
@@ -38,8 +35,14 @@ var currentBoard = [],
 	[0, 0, 0, 2, 0, 0, 0]
 ];
 
-var chipDiameter = ~~(GAME_AREA_WIDTH / defaultBoard.length);
+// @{
+// Размеры
+var chipDiameter = 67;
 var chipRadius   = chipDiameter / 2;
+
+var GAME_AREA_WIDTH  = chipDiameter * defaultBoard.length + 1,
+    GAME_AREA_HEIGHT = chipDiameter * defaultBoard.length + 1;
+// @}
 
 function startGame() {
 	motionCounter = 0;
@@ -58,18 +61,19 @@ function startGame() {
 function checkWin() {
 	return (
 		   1 == currentBoard[3][3]
+
 		&& 3 == currentBoard[0][3]
 		&& 3 == currentBoard[1][3]
 		&& 3 == currentBoard[2][3]
-		
+
 		&& 3 == currentBoard[4][3]
 		&& 3 == currentBoard[5][3]
 		&& 3 == currentBoard[6][3]
-		
+
 		&& 2 == currentBoard[3][0]
 		&& 2 == currentBoard[3][1]
 		&& 2 == currentBoard[3][2]
-		
+
 		&& 2 == currentBoard[3][4]
 		&& 2 == currentBoard[3][5]
 		&& 2 == currentBoard[3][6]
