@@ -6,6 +6,8 @@ var canvas  = null,
 var currentChip    = null,
     targetCell     = null;
 
+var motionCounter = 0;
+
 var isWin = false;
 
 /*
@@ -66,6 +68,7 @@ var spriteImg = new Image();
 
 
 function startGame() {
+	motionCounter   = 0;
 	movementHistory = [];
 	
 	// @{
@@ -107,6 +110,11 @@ function checkWin() {
 	);
 }
 
+function increaseMotionCounter() {
+	++motionCounter;
+}
+
+
 function drawBoard() {
 	var i,
 	    j,
@@ -121,7 +129,7 @@ function drawBoard() {
 	// @{
 	// Отрисовка счётчика ходов
 	context.fillStyle = 'white';
-	context.fillText('Ходов: ' + movementHistory.length, 3, 15, GAME_AREA_WIDTH);
+	context.fillText('Ходов: ' + motionCounter, 3, 15, GAME_AREA_WIDTH);
 	// @}
 	
 	for (i = 0, ilen = currentBoard.length; i < ilen; i += 1) {
@@ -352,6 +360,8 @@ function onClick(e) {
 		// @}
 		
 		currentChip = targetCell = null;
+		
+		increaseMotionCounter();
 		
 		drawBoard();
 		
