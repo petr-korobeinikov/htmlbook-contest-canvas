@@ -3,7 +3,7 @@
 var canvas  = null,
     context = null;
 
-var currentChip = null,
+var currentChip    = null,
     targetCell     = null;
 
 var motionCounter = 0;
@@ -35,6 +35,7 @@ var currentBoard = [],
 	[0, 0, 0, 2, 0, 0, 0]
 ];
 
+
 // @{
 // Размеры
 var chipDiameter = 67;
@@ -44,17 +45,25 @@ var GAME_AREA_WIDTH  = chipDiameter * defaultBoard.length + 1,
     GAME_AREA_HEIGHT = chipDiameter * defaultBoard.length + 1;
 // @}
 
+
 // @{
 // Картинки
 var spriteImg = new Image();
     spriteImg.src = 'img/game_sprites.png';
 // @}
 
+
+
 function startGame() {
 	motionCounter = 0;
 	
 	// @{
-	// Правильно клонируем массив
+	/* Правильно клонируем массив, содержащий игровое поле
+	 * Проверьте, что будет:
+	 * a = [1, 2, 3];
+	 * b = a;
+	 * b[0] = 777;
+	 */
 	var i, j, ilen, jlen;
 	for (i = 0, ilen = defaultBoard.length; i < ilen; i += 1) {
 		currentBoard[i] = defaultBoard[i].slice(0);
@@ -64,6 +73,7 @@ function startGame() {
 	drawBoard();
 }
 
+// Более элегантный способ придумать сложно =)
 function checkWin() {
 	return (
 		   1 == currentBoard[3][3]
@@ -98,6 +108,7 @@ function drawBoard() {
 	    row,
 	    cell;
 	
+	// После каждой итерации перерисовываем поле заново.
 	context.clearRect(0, 0, GAME_AREA_WIDTH, GAME_AREA_HEIGHT);
 	
 	// @{
