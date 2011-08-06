@@ -46,7 +46,8 @@ var currentBoard = [],
  *   to       : {x: x, y: y}
  * }
  */
-var movementHistory = [];
+var movementHistory = [],
+    MAX_LENGTH = 3;
 // @}
 
 // @{
@@ -360,6 +361,13 @@ function onClick(e) {
 				to       : {x: targetCell.x,  y: targetCell.y}
 			})).run()
 		);
+		// @}
+		
+		// @{
+		// Удаляем из истории очень старые операции, чтобы не занимали память.
+		if (movementHistory.length > MAX_LENGTH) {
+			movementHistory.splice(0, 1);
+		}
 		// @}
 		
 		currentChip = targetCell = null;
