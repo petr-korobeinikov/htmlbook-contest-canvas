@@ -122,7 +122,7 @@ function drawBoard() {
 }
 
 function drawCell(x, y, fill) {
-	var fillStyle;
+	var spriteCoord;
 	
 	x = x * 2 * chipRadius + chipRadius;
 	y = y * 2 * chipRadius + chipRadius;
@@ -131,13 +131,13 @@ function drawCell(x, y, fill) {
 	// Стиль заливки фишки
 	switch (fill) {
 	case CELL_BLACK :
-		fillStyle = 'black';
+		spriteCoord = {x: 67 + 2, y: 3};
 		break;
 	case CELL_WHITE :
-		fillStyle = 'yellow';
+		spriteCoord = {x: 67 * 3 + 3, y: 3};
 		break;
 	case CELL_GRAY :
-		fillStyle = 'green';
+		spriteCoord = {x: 67 * 5 + 5, y: 3};
 		break;
 	}
 	// @}
@@ -160,13 +160,17 @@ function drawCell(x, y, fill) {
 	// @{
 	// Фишка рисуется на непустых ячейках
 	if (fill != CELL_FREE) {
-		context.beginPath();
-		context.arc(x + .5, y + .5, chipRadius - 3, 0, 2 * Math.PI, false);
-		context.lineWidth = 1;
-		context.fillStyle = fillStyle;
-		context.fill();
-		context.closePath();
-		context.stroke();
+		context.drawImage(
+			spriteImg,
+			spriteCoord.x,
+			spriteCoord.y,
+			chipDiameter,
+			chipDiameter,
+			x - chipRadius,
+			y - chipRadius,
+			chipDiameter,
+			chipDiameter
+		);
 	}
 	// @}
 }
