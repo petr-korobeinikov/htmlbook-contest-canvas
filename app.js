@@ -6,8 +6,6 @@ var canvas  = null,
 var currentChip    = null,
     targetCell     = null;
 
-var motionCounter = 0;
-
 var isWin = false;
 
 /*
@@ -37,6 +35,20 @@ var currentBoard = [],
 
 
 // @{
+/* История ходов.
+ * Длина массива истории используется как счётчик ходов.
+ * Формат записи:
+ * {
+ *   chipType : N,
+ *   from     : {x: x, y: y},
+ *   to       : {x: x, y: y}
+ * }
+ */
+var movementHistory = [];
+    movementHistory.current = 0; // Не стесняемся и добавляем новое свойство прямо в объект массива.
+// @}
+
+// @{
 // Размеры
 var chipDiameter = 67;
 var chipRadius   = chipDiameter / 2;
@@ -55,7 +67,8 @@ var spriteImg = new Image();
 
 
 function startGame() {
-	motionCounter = 0;
+	movementHistory = [];
+	movementHistory.current = 0;
 	
 	// @{
 	/* Правильно клонируем массив, содержащий игровое поле
@@ -96,10 +109,6 @@ function checkWin() {
 	);
 }
 
-function increaseMotionCounter() {
-	++motionCounter;
-}
-
 function drawBoard() {
 	var i,
 	    j,
@@ -114,7 +123,7 @@ function drawBoard() {
 	// @{
 	// Отрисовка счётчика ходов
 	context.fillStyle = 'white';
-	context.fillText('Ходов: ' + motionCounter, 3, 15, GAME_AREA_WIDTH);
+	context.fillText('Ходов: ' + movementHistory.length, 3, 15, GAME_AREA_WIDTH);
 	// @}
 	
 	for (i = 0, ilen = currentBoard.length; i < ilen; i += 1) {
@@ -307,6 +316,8 @@ function onClick(e) {
 		highlightCurrentChip(currentChip.type);
 	}
 
+	// @{
+	// Указали цель, куда будет перемещена выбранная фишка
 	if (
 		currentChip
 		&& (CELL_FREE == clickedCell)
@@ -317,18 +328,32 @@ function onClick(e) {
 			y    : j
 		};
 	}
+	// @}
 
+	// @{
+	/* Переносим выбранную фишку.
+	 * Обнуляем выбранную фишку и цель.
+	 * Записываем ход в историю.
+	 * Перерисовываем поле.
+	 * Проверяем, а не победил ли игрок?
+	 */
 	if (
 		currentChip
 		&& targetCell
 		&& canBeMoved(currentChip, targetCell)
 	) {
-		currentBoard[targetCell.y][targetCell.x]   = currentChip.type;
-		currentBoard[currentChip.y][currentChip.x] = targetCell.type;
-
-		currentChip = targetCell = null;
+		// @{
+		// Записываем ход в историю.
+		movementHistory.push(
+			(new MoveCommand({
+				chipType : currentChip.type,
+				from     : {x: currentChip.x, y: currentChip.y},
+				to       : {x: targetCell.x,  y: targetCell.y}
+			})).run()
+		);
+		// @}
 		
-		increaseMotionCounter();
+		currentChip = targetCell = null;
 		
 		drawBoard();
 		
@@ -336,4 +361,24 @@ function onClick(e) {
 			alert('Победа!');
 		}
 	}
+	// @}
 }
+
+// @{
+// Представим "перемещение" фишки в виде паттерна Command
+function MoveCommand(options) {
+	this.options = options;
+}
+
+MoveCommand.prototype.run = function() {
+	var chipType = this.options.chipType;
+	
+	currentBoard[this.options.to.y][this.options.to.x]     = chipType;
+	currentBoard[this.options.from.y][this.options.from.x] = CELL_FREE;
+	
+	return this;
+};
+// @}
+
+function undo() {}
+function redo() {}
