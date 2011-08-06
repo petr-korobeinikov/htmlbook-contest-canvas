@@ -126,13 +126,13 @@ function getSpriteCoord(chipType) {
 	
 	switch (chipType) {
 	case CELL_BLACK :
-		spriteCoord = {x: 67 + 2, y: 3};
+		spriteCoord = {x: chipDiameter + 2, y: 3};
 		break;
 	case CELL_WHITE :
-		spriteCoord = {x: 67 * 3 + 3, y: 3};
+		spriteCoord = {x: chipDiameter * 3 + 3, y: 3};
 		break;
 	case CELL_GRAY :
-		spriteCoord = {x: 67 * 5 + 5, y: 3};
+		spriteCoord = {x: chipDiameter * 5 + 5, y: 3};
 		break;
 	}
 	
@@ -192,7 +192,7 @@ function highlightCurrentChip(chipType) {
 
 	context.drawImage(
 		spriteImg,
-		spriteCoord.x + 67 + 3,
+		spriteCoord.x + chipDiameter + 3,
 		spriteCoord.y,
 		chipDiameter,
 		chipDiameter,
