@@ -44,6 +44,12 @@ var GAME_AREA_WIDTH  = chipDiameter * defaultBoard.length + 1,
     GAME_AREA_HEIGHT = chipDiameter * defaultBoard.length + 1;
 // @}
 
+// @{
+// Картинки
+var spriteImg = new Image();
+    spriteImg.src = 'img/game_sprites.png';
+// @}
+
 function startGame() {
 	motionCounter = 0;
 	
@@ -138,11 +144,17 @@ function drawCell(x, y, fill) {
 	
 	// @{
 	// Квадратик
-	context.rect(x - chipRadius + .5, y - chipRadius + .5, chipRadius * 2, chipRadius * 2);
-	context.lineWidth = 1;
-	context.strokeStyle = "white";
-	context.closePath();
-	context.stroke();
+	context.drawImage(
+		spriteImg,
+		1,
+		3,
+		chipDiameter,
+		chipDiameter,
+		x - chipRadius,
+		y - chipRadius,
+		chipDiameter,
+		chipDiameter
+	);
 	// @}
 	
 	// @{
