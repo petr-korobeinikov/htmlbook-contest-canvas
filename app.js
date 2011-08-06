@@ -131,8 +131,9 @@ function drawBoard() {
 	
 	// @{
 	// Отрисовка счётчика ходов
-	context.fillStyle = 'white';
-	context.fillText('Ходов: ' + motionCounter.value, 3, 15, GAME_AREA_WIDTH);
+	//context.fillStyle = 'white';
+	//context.fillText('Ходов: ' + motionCounter.value, 3, 15, GAME_AREA_WIDTH);
+	document.getElementById('motion_counter_value').innerHTML = motionCounter.value;
 	// @}
 	
 	// @{

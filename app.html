@@ -49,6 +49,17 @@ h1 {
 	padding-top:10px;
 }
 
+.step {
+	font-size: 18px;
+	color:#617a8e;
+	text-shadow: 3px 2px 3px #000000, 0 0 3px #000000;
+}
+
+.step span {
+	font-size: 59px;
+	color:#4fa8d8;
+}
+
 .column_left p {
 	color: #676f79;
 	font-family: Segoe UI;
@@ -152,6 +163,7 @@ window.onload = function() {
 		<div class="column_right">
 			<div id="wrapper">
 				<div id="game"></div>
+				<div class="step">Ходов: <span id="motion_counter_value"></span></div>
 			</div>
 		</div>
 	</div>
