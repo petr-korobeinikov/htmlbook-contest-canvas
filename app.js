@@ -121,15 +121,10 @@ function drawBoard() {
 	}
 }
 
-function drawCell(x, y, fill) {
+function getSpriteCoord(chipType) {
 	var spriteCoord;
 	
-	x = x * 2 * chipRadius + chipRadius;
-	y = y * 2 * chipRadius + chipRadius;
-	
-	// @{
-	// Стиль заливки фишки
-	switch (fill) {
+	switch (chipType) {
 	case CELL_BLACK :
 		spriteCoord = {x: 67 + 2, y: 3};
 		break;
@@ -140,6 +135,19 @@ function drawCell(x, y, fill) {
 		spriteCoord = {x: 67 * 5 + 5, y: 3};
 		break;
 	}
+	
+	return spriteCoord;
+}
+
+function drawCell(x, y, fill) {
+	var spriteCoord;
+	
+	x = x * 2 * chipRadius + chipRadius;
+	y = y * 2 * chipRadius + chipRadius;
+	
+	// @{
+	// Стиль заливки фишки
+	spriteCoord = getSpriteCoord(fill);
 	// @}
 	
 	// @{
@@ -175,18 +183,24 @@ function drawCell(x, y, fill) {
 	// @}
 }
 
-function highlightCurrentChip() {
-	var x, y;
-
+function highlightCurrentChip(chipType) {
+	var x, y,
+	    spriteCoord = getSpriteCoord(chipType);
+	
 	x = currentChip.x * 2 * chipRadius + chipRadius;
 	y = currentChip.y * 2 * chipRadius + chipRadius;
 
-	context.beginPath();
-	context.arc(x, y, chipRadius - 3, 0, 2 * Math.PI, false);
-	context.lineWidth = 3;
-	context.strokeStyle = 'red';
-	context.closePath();
-	context.stroke();
+	context.drawImage(
+		spriteImg,
+		spriteCoord.x + 67 + 3,
+		spriteCoord.y,
+		chipDiameter,
+		chipDiameter,
+		x - chipRadius,
+		y - chipRadius,
+		chipDiameter,
+		chipDiameter
+	);
 }
 
 function getCursorPosition(e) {
@@ -283,7 +297,7 @@ function onClick(e) {
 			y    : j
 		};
 		
-		highlightCurrentChip();
+		highlightCurrentChip(currentChip.type);
 	}
 
 	if (
