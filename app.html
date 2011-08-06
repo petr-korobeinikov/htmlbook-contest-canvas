@@ -47,8 +47,9 @@ h1 {
 	text-shadow: 3px 2px 2px #000000, 0 0 3px #000000;
 }
 
-p {
-	color: white;
+.column_left p {
+	color: #5a6169;
+	font-family: Segoe UI;
 }
 
 .column_wrapper {
@@ -128,24 +129,23 @@ window.onload = function() {
 			</p>
 			<p>Отменить можно 3 последних хода.</p>
 
+			<input
+				id="start_new_game"
+				type="button"
+				value="Начать новую игру!"
+				onclick="startGame()"
+			>
+
+			<input
+				id="undo"
+				type="button"
+				value="Отменить ход"
+				onclick="undo()"
+			>
 		</div>
 		<div class="column_right">
 			<div id="wrapper">
 				<div id="game"></div>
-
-				<input
-					id="start_new_game"
-					type="button"
-					value="Начать новую игру!"
-					onclick="startGame()"
-				>
-
-				<input
-					id="undo"
-					type="button"
-					value="Отменить ход"
-					onclick="undo()"
-				>
 			</div>
 		</div>
 	</div>
