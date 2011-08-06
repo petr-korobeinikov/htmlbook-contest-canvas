@@ -111,9 +111,12 @@ function checkWin() {
 }
 
 function increaseMotionCounter() {
-	++motionCounter;
+	motionCounter += 1;
 }
 
+function decreaseMotionCounter() {
+	motionCounter -= 1;
+}
 
 function drawBoard() {
 	var i,
@@ -399,6 +402,8 @@ function undo() {
 			from     : {x: movement.options.to.x,   y: movement.options.to.y},
 			to       : {x: movement.options.from.x, y: movement.options.from.y}
 		})).run();
+		
+		decreaseMotionCounter();
 		
 		drawBoard();
 	}
