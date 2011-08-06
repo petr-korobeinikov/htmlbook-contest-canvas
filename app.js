@@ -292,10 +292,6 @@ function onClick(e) {
 	
 	clickedCell = currentBoard[j][i];
 	
-	if (checkWin()) {
-		alert('Победа!');
-	}
-	
 	drawBoard();
 	
 	if (
@@ -335,5 +331,9 @@ function onClick(e) {
 		increaseMotionCounter();
 		
 		drawBoard();
+		
+		if (checkWin()) {
+			alert('Победа!');
+		}
 	}
 }
