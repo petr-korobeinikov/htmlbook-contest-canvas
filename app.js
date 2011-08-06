@@ -36,7 +36,7 @@ var currentBoard = [],
 
 // @{
 /* История ходов.
- * Длина массива истории используется как счётчик ходов.
+ * Памяти, конечно, будет жрать...
  * Формат записи:
  * {
  *   chipType : N,
@@ -45,7 +45,6 @@ var currentBoard = [],
  * }
  */
 var movementHistory = [];
-    movementHistory.current = 0; // Не стесняемся и добавляем новое свойство прямо в объект массива.
 // @}
 
 // @{
@@ -68,7 +67,6 @@ var spriteImg = new Image();
 
 function startGame() {
 	movementHistory = [];
-	movementHistory.current = 0;
 	
 	// @{
 	/* Правильно клонируем массив, содержащий игровое поле
@@ -380,5 +378,18 @@ MoveCommand.prototype.run = function() {
 };
 // @}
 
-function undo() {}
-function redo() {}
+function undo() {
+	var movement;
+
+	if (movementHistory.length > 0) {
+		movement = movementHistory.pop();
+		
+		(new MoveCommand({
+			chipType : movement.options.chipType,
+			from     : {x: movement.options.to.x,   y: movement.options.to.y},
+			to       : {x: movement.options.from.x, y: movement.options.from.y}
+		})).run();
+		
+		drawBoard();
+	}
+}
