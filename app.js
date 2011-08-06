@@ -17,13 +17,6 @@ var motionCounter = {
 
 var isWin = false;
 
-/*
- * 0 - doomed
- * 1 - black
- * 2 - white
- * 3 - gray
- * 4 - free
- */
 var CELL_DOOMED = 0,
     CELL_BLACK  = 1,
     CELL_WHITE  = 2,
@@ -31,6 +24,8 @@ var CELL_DOOMED = 0,
     CELL_FREE   = 4;
     
 
+// @{
+// Если задавать поле константами - будет "ну ооочень" жирный массив.
 var currentBoard = [],
     defaultBoard = [
 	[0, 0, 0, 2, 0, 0, 0],
@@ -41,6 +36,7 @@ var currentBoard = [],
 	[0, 0, 4, 2, 4, 0, 0],
 	[0, 0, 0, 2, 0, 0, 0]
 ];
+// @}
 
 
 // @{
@@ -53,8 +49,8 @@ var currentBoard = [],
  *   to       : {x: x, y: y}
  * }
  */
-var movementHistory = [],
-    MAX_LENGTH = 3;
+var movementHistory     = [],
+    HISTORY_MAX_LENGTH  = 3;
 // @}
 
 // @{
@@ -139,6 +135,8 @@ function drawBoard() {
 	context.fillText('Ходов: ' + motionCounter.value, 3, 15, GAME_AREA_WIDTH);
 	// @}
 	
+	// @{
+	// Отрисовка игрового поля
 	for (i = 0, ilen = currentBoard.length; i < ilen; i += 1) {
 		row = currentBoard[i];
 		for (j = 0, jlen = row.length; j < jlen; j += 1) {
@@ -152,36 +150,27 @@ function drawBoard() {
 			drawCell(j, i, cell);
 		}
 	}
+	// @}
 }
 
 function getSpriteCoord(chipType) {
-	var spriteCoord;
-	
+	// Методом подбора устанавливаем координаты спрайтов.
+	// Можно было бы подумать о карте изображения...
 	switch (chipType) {
 	case CELL_BLACK :
-		spriteCoord = {x: chipDiameter + 2, y: 3};
-		break;
+		return {x: chipDiameter + 2, y: 3};
 	case CELL_WHITE :
-		spriteCoord = {x: chipDiameter * 3 + 3, y: 3};
-		break;
+		return {x: chipDiameter * 3 + 3, y: 3};
 	case CELL_GRAY :
-		spriteCoord = {x: chipDiameter * 5 + 5, y: 3};
-		break;
+		return {x: chipDiameter * 5 + 5, y: 3};
 	}
-	
-	return spriteCoord;
 }
 
-function drawCell(x, y, fill) {
-	var spriteCoord;
+function drawCell(x, y, chipType) {
+	var spriteCoord = getSpriteCoord(chipType);
 	
 	x = x * 2 * chipRadius + chipRadius;
 	y = y * 2 * chipRadius + chipRadius;
-	
-	// @{
-	// Стиль заливки фишки
-	spriteCoord = getSpriteCoord(fill);
-	// @}
 	
 	// @{
 	// Квадратик
@@ -200,7 +189,7 @@ function drawCell(x, y, fill) {
 	
 	// @{
 	// Фишка рисуется на непустых ячейках
-	if (fill != CELL_FREE) {
+	if (chipType != CELL_FREE) {
 		context.drawImage(
 			spriteImg,
 			spriteCoord.x,
@@ -236,6 +225,8 @@ function highlightCurrentChip(chipType) {
 	);
 }
 
+// @{
+// Эту функцию используют "ваще фсе", как её опубликовали в diveintohtml5...
 function getCursorPosition(e) {
 	var x, y;
 	
@@ -252,6 +243,7 @@ function getCursorPosition(e) {
 	
 	return {x: x, y: y};
 }
+// @}
 
 function canBeMoved(from, to) {
 	var notJumpingMove = function(from, to) {
@@ -368,7 +360,7 @@ function onClick(e) {
 		
 		// @{
 		// Удаляем из истории очень старые операции, чтобы не занимали память.
-		if (movementHistory.length > MAX_LENGTH) {
+		if (movementHistory.length > HISTORY_MAX_LENGTH) {
 			movementHistory.splice(0, 1);
 		}
 		// @}
