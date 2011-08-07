@@ -395,7 +395,6 @@ function onClick(e) {
 		// @{
 		// Игрок победил.
 		if (checkWin()) {
-			console.log('Победа');
 			canvas.removeEventListener("click", onClick, false);
 			
 			context.font      = '46px Georgia';
