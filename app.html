@@ -22,6 +22,10 @@ body {
 	height: 598px;
 }
 
+#game_wrapper {
+	display: none;
+}
+
 #game {
 	padding-top: 60px;
 }
@@ -122,6 +126,9 @@ window.onload = function() {
 		document.getElementById('game').appendChild(canvas);
 
 		context = canvas.getContext('2d');
+
+		// Что бы страничка не прыгала для IE, в котором канвы нету...
+		document.getElementById('game_wrapper').style.display = 'block';
 
 		startGame();
 	} catch (e) {
