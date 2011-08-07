@@ -27,11 +27,15 @@ body {
 }
 
 #support {
-	background: #fee;
-	border: 1px solid red;
 	color: red;
+	font-size: 46px;
+	font-family: Georgia;
+	text-shadow: 3px 2px 2px #000000, 0 0 3px #000000;
 	display: none;
-	padding: 10px;
+	margin: 0 auto;
+	margin-top: 150px;
+	text-align: center;
+	width: 1000px;
 }
 
 canvas {
@@ -125,8 +129,10 @@ window.onload = function() {
 	} catch (e) {
 		typeof console != 'undefined' && console.warn(e);
 
+		document.getElementById('game_wrapper').style.display = 'none';
+
 		var support = document.getElementById('support');
-		support.innerHTML = 'Ваш браузер не умеет такие игры =(';
+		support.innerHTML = 'Ваш браузер не умеет такие игры =[';
 		support.style.display = 'block';
 	}
 }
@@ -135,42 +141,45 @@ window.onload = function() {
 <body>
 	<div id="support"></div>
 
-	<div class="column_wrapper">
-		<div class="column_left">
-			<h1>Плитки майя</h1>
+	<div id="game_wrapper">
+		<div class="column_wrapper">
+			<div class="column_left">
+				<h1>Плитки майя</h1>
 
-			<p>Эта древняя игра-головоломка заимствована у индейцев племени майя и рассчитана на одного игрока.</p>
-			<p>
-				Задача заключается в том, чтобы поменять местами белый и серый ряды, перемещая фишки на свободные поля,
-				причём центральная фишка в итоге должна остаться на своём месте.
-			</p>
-			<p>
-				За один ход можно перемещать фишку на любое количество ходов,
-				но перепрыгивать через другие фишки запрещается.
-			</p>
-			<p>Отменить можно 3 последних хода.</p>
+				<p>Эта древняя игра-головоломка заимствована у индейцев племени майя и рассчитана на одного игрока.</p>
+				<p>
+					Задача заключается в том, чтобы поменять местами жёлтный и голубой ряды,
+					перемещая фишки на свободные поля,
+					причём центральная фишка в итоге должна остаться на своём месте.
+				</p>
+				<p>
+					За один ход можно перемещать фишку на любое количество ходов,
+					но перепрыгивать через другие фишки запрещается.
+				</p>
+				<p>Отменить можно три последних хода.</p>
 
-			<input
-				id="start_new_game"
-				type="button"
-				value="Начать новую игру!"
-				onclick="startGame()"
-			>
+				<input
+					id="start_new_game"
+					type="button"
+					value="Начать новую игру!"
+					onclick="startGame()"
+				>
 
-			<input
-				id="undo"
-				type="button"
-				value="Отменить ход"
-				onclick="undo()"
-			>
-		</div>
-		<div class="column_right">
-			<div id="wrapper">
-				<div id="game"></div>
-				<div class="step">Ходов: <span id="motion_counter_value"></span></div>
+				<input
+					id="undo"
+					type="button"
+					value="Отменить ход"
+					onclick="undo()"
+				>
+			</div>
+			<div class="column_right">
+				<div id="wrapper">
+					<div id="game"></div>
+					<div class="step">Ходов: <span id="motion_counter_value"></span></div>
+				</div>
 			</div>
 		</div>
+		<div style="clear: both;"></div>
 	</div>
-	<div style="clear: both;"></div>
 </body>
 </html>
