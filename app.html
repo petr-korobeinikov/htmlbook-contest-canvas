@@ -68,7 +68,9 @@ window.onload = function() {
 					type="button"
 					value="Отменить ход"
 					onclick="undo()"
+					disabled="disabled"
 				>
+				<div class="step undo_count">Можно отменить: <span id="undo_count">0</span></div>
 			</div>
 			<div class="column_right">
 				<div id="wrapper">

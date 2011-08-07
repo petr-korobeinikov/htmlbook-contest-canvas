@@ -10,8 +10,26 @@ var currentChip    = null,
 // Счётчик ходов
 var motionCounter = {
 		value: 0,
-		inc:   function() { this.value++; },
-		dec:   function() { this.value--; }
+		inc:   function() {
+			this.value++;
+			this.updateUndoCount();
+		},
+		dec:   function() {
+			this.value--;
+			this.updateUndoCount();
+		},
+		updateUndoCount: function() {
+			var undoButton    = document.getElementById('undo'),
+		        historyLength = movementHistory.length;
+
+			document.getElementById('undo_count').innerHTML = historyLength;
+			
+			if (historyLength > 0) {
+				undoButton.removeAttribute('disabled');
+			} else {
+				undoButton.setAttribute('disabled', 'disabled');
+			}
+		}
 		};
 // @}
 
@@ -91,6 +109,8 @@ var spriteImg = new Image();
 function startGame() {
 	// Начинаем обрабатывать клики по полю.
 	canvas.addEventListener("click", onClick, false);
+	
+	document.getElementById('undo').setAttribute('disabled', 'disabled');
 	
 	// @{
 	// Сбрасываем счётчик и историю ходов.

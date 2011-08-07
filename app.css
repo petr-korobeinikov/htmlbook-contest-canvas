@@ -65,6 +65,16 @@ h1 {
 	font-size: 40px;
 }
 
+.undo_count {
+	font-size: 14px;
+	text-align: left;
+	width: auto;
+}
+
+.undo_count span {
+	font-size: 20px;
+}
+
 .column_left p {
 	color: #d4e9fb;
 	font-family: Segoe UI;
@@ -104,4 +114,9 @@ input[type=button] {
 
 input[type=button]:active {
 	background: #13171b;
+}
+
+input[type=button]:disabled {
+	color: #777;
+	cursor: auto;
 }
