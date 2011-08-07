@@ -38,6 +38,23 @@ var currentBoard = [],
 ];
 // @}
 
+// @{
+// Чтобы посмотреть, как отображается победа,
+// выполните в консоли этот код и передвиньте оставшуюся фишку ;)
+/*
+currentBoard = [
+[0, 0, 0, 3, 0, 0, 0],
+[0, 0, 3, 4, 4, 0, 0],
+[0, 0, 0, 3, 0, 0, 0],
+[2, 2, 2, 1, 2, 2, 2],
+[0, 0, 0, 3, 0, 0, 0],
+[0, 0, 4, 3, 4, 0, 0],
+[0, 0, 0, 3, 0, 0, 0]
+];
+drawBoard();
+*/
+// @}
+
 
 // @{
 /* История ходов.
@@ -72,6 +89,9 @@ var spriteImg = new Image();
 
 
 function startGame() {
+	// Начинаем обрабатывать клики по полю.
+	canvas.addEventListener("click", onClick, false);
+	
 	// @{
 	// Сбрасываем счётчик и историю ходов.
 	motionCounter.value = 0;
@@ -372,9 +392,24 @@ function onClick(e) {
 		
 		drawBoard();
 		
+		// @{
+		// Игрок победил.
 		if (checkWin()) {
-			alert('Победа!');
+			console.log('Победа');
+			canvas.removeEventListener("click", onClick, false);
+			
+			context.font      = '46px Georgia';
+			context.fillStyle = 'white';
+			context.textAlign = 'center';
+			
+			// a little bit of magic =)
+			context.globalAlpha = 0.3;
+			drawBoard();
+			context.globalAlpha = 1;
+			
+			context.fillText('Победа!', GAME_AREA_WIDTH / 2, GAME_AREA_HEIGHT / 2);
 		}
+		// @}
 	}
 	// @}
 }
