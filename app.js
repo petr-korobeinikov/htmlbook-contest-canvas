@@ -415,7 +415,15 @@ function onClick(e) {
 		// @{
 		// Игрок победил.
 		if (checkWin()) {
+			// Нажимать на поле больше нельзя.
 			canvas.removeEventListener("click", onClick, false);
+			
+			// Очищаем историю ходов.
+			movementHistory  = [];
+			motionCounter.updateUndoCount();
+			
+			// Запрещаем отменять ходы.
+			
 			
 			context.font      = '46px Georgia';
 			context.fillStyle = 'white';
